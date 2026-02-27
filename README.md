@@ -46,8 +46,8 @@ Uma aplicação mobile com backend dedicado que:
 O sistema será dividido em:
 
 - **Mobile:** Kotlin + Jetpack Compose  
-- **Backend:** Kotlin (Ktor ou Spring Boot)  
-- **Banco de Dados:** PostgreSQL ou MongoDB  
+- **Backend:** Ktor
+- **Banco de Dados:** PostgreSQL  
 - **Arquitetura:** Camadas (Presentation, Application, Domain, Infrastructure)
 
 ---
