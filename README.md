@@ -1,192 +1,208 @@
 # DONGNATE
 
-Aplicativo mobile que conecta ONGs a doadores por meio de um sistema de cadastro e correspondência de itens.
-
-## Integrantes
-- THIAGO HENRIQUE CIRIANO NEVES
-- ALVARO LUANDREY DE SANTANA DE FREITAS
-- MATHEUS DE OLIVEIRA MOTA
-
-## Tecnologias
-- Kotlin
-- Jetpack Compose
-- Ktor
-- PostgreSQL
-
-## Padrões Aplicados (AV1)
-- Factory Method
-- Facade
-
-# ✅ CHECKLIST AV1 — ORDEM CORRETA DE EXECUÇÃO
+**DONGNATE** é um aplicativo mobile que conecta ONGs a doadores, funcionando como uma plataforma de intermediação digital. 
+O DONGNATE busca promover impacto social ao facilitar a conexão entre organizações sociais e doadores, incentivando solidariedade e colaboração comunitária através da tecnologia. O sistema **não realiza logística, armazenamento ou entrega de itens**.Seu objetivo é apenas conectar quem precisa de doação com quem deseja doar.
 
 ---
 
-## 🟢 FASE 1 — Definição (1–2 dias)
+## 🎯 Objetivo do Projeto
 
-### 1️⃣ Definir escopo mínimo (congelar escopo)
+Criar uma aplicação mobile com backend estruturado utilizando **Padrões de Projeto**, permitindo que:
 
-* [ ] Nome do projeto
-* [ ] Funcionalidades principais:
-  * [ ] Cadastro de usuário (ONG / Doador)
-  * [ ] Cadastro de item
-  * [ ] Listagem de itens
-  * [ ] Sistema simples de match manual
-* [ ] Escolher oficialmente os 2 padrões:
-  * [ ] Factory Method
-  * [ ] Facade
+* ONGs publiquem necessidades
+* Doadores encontrem essas necessidades
+* Doadores manifestem interesse em ajudar
+* O sistema registre a conexão entre as partes
+
+Após a conexão, a comunicação e entrega acontecem externamente ao sistema.
 
 ---
 
-## 🟢 FASE 2 — Banco de Dados (BASE DE TUDO)
+## 👥 Integrantes do Grupo
 
-
-### 2️⃣ Modelar o banco 
-
-Entidades mínimas:
-
-* [ ] users
-
-  * id
-  * name
-  * email
-  * password
-  * role (ONG / DONOR)
-
-* [ ] items
-
-  * id
-  * name
-  * quantity
-  * urgency
-  * user_id (FK)
-
-* [ ] donations
-
-  * id
-  * donor_id
-  * ong_id
-  * item_id
-  * quantity
+* THIAGO HENRIQUE CIRIANO NEVES
+* ALVARO LUANDREY DE SANTANA DE FREITAS
+* MATHEUS DE OLIVEIRA MOTA
 
 ---
 
-### 3️⃣ Criar no Supabase
+## 🛠 Tecnologias Utilizadas
 
-* [ ] Criar projeto
-* [ ] Criar tabelas
-* [ ] Criar FKs
-* [ ] Testar inserção manual no SQL Editor
-* [ ] Ativar Row Level Security depois (se der tempo)
+### Backend
 
----
+* Kotlin
+* Framework: (Ktor)
+* PostgreSQL (Supabase)
 
-## 🟢 FASE 3 — Backend (Kotlin + Ktor ou Spring)
+### Mobile
 
-### 4️⃣ Criar projeto backend
+* Kotlin
+* Jetpack Compose
+* Arquitetura MVVM
+* Retrofit para consumo de API
 
-* [ ] Configurar conexão com Supabase (Postgres)
-* [ ] Criar camadas:
+### Banco de Dados
 
-  * controller
-  * service
-  * repository
-  * factory
-  * facade
+* Supabase (PostgreSQL)
 
 ---
 
-### 5️⃣ Implementar PRIMEIRA funcionalidade completa (Vertical)
+## 🧠 Padrões de Projeto – AV1
 
-🔵 Funcionalidade 1: Cadastro de Usuário
+### 1️⃣ Factory Method
 
-* [ ] Criar entidade User
+Utilizado para criação de usuários:
+
+* ONG
+* DOADOR
+
+Permite encapsular a lógica de criação e evitar condicionais excessivas no código.
+
+### 2️⃣ Facade
+
+Utilizado para centralizar a lógica de criação de conexões (Match), organizando:
+
+* Validações
+* Criação de registros
+* Controle de status
+
+Reduz acoplamento entre controllers e serviços.
+
+---
+
+## 🗄 Modelagem do Banco de Dados
+
+### 📌 users
+
+* id
+* name
+* email
+* password
+* role (ONG | DONOR)
+
+### 📌 needs
+
+* id
+* title
+* description
+* quantity_requested
+* urgency
+* ong_id (FK → users)
+
+### 📌 matches
+
+* id
+* donor_id (FK → users)
+* need_id (FK → needs)
+* message
+* status (PENDING | ACCEPTED | DECLINED)
+
+---
+
+## 🔄 Funcionalidades – AV1
+
+### 👤 Usuários
+
+* Cadastro de usuário (ONG ou DOADOR)
+* Listagem de usuários
+
+### 🏢 ONGs
+
+* Criar necessidade
+* Listar suas necessidades
+
+### 🎁 Doadores
+
+* Visualizar necessidades disponíveis
+* Manifestar interesse em doar
+
+### 🤝 Sistema
+
+* Criar Match
+* Atualizar status do Match
+
+---
+
+## 📋 Checklist AV1
+
+### 🟢 Planejamento
+
+* [ ] Definir escopo final
+* [ ] Confirmar padrões escolhidos
+* [ ] Modelar banco no papel
+
+---
+
+### 🗄 Banco (Supabase)
+
+* [ ] Criar projeto no Supabase
+* [ ] Criar tabela users
+* [ ] Criar tabela needs
+* [ ] Criar tabela matches
+* [ ] Definir chaves estrangeiras
+* [ ] Testar inserção manual via SQL
+
+---
+
+### ⚙ Backend
+
+* [ ] Criar estrutura do projeto
+* [ ] Configurar conexão com banco
+* [ ] Implementar entidade User
 * [ ] Implementar Factory Method
 * [ ] Criar endpoint POST /users
-* [ ] Testar no Postman
-* [ ] Criar GET /users
+* [ ] Implementar entidade Need
+* [ ] Criar endpoints POST e GET /needs
+* [ ] Implementar MatchFacade
+* [ ] Criar endpoint POST /matches
+* [ ] Criar endpoint PATCH /matches/{id}/status
+* [ ] Testar todos os endpoints no Postman
 
 ---
 
-### 6️⃣ Funcionalidade 2: Cadastro de Item
+### 📱 Mobile
 
-* [ ] Criar entidade Item
-* [ ] POST /items
-* [ ] GET /items
-* [ ] Vincular ao user_id
-
----
-
-### 7️⃣ Funcionalidade 3: Criar Doação
-
-Aqui entra o Facade:
-
-* [ ] Criar DonationFacade
-* [ ] Criar endpoint POST /donations
-* [ ] Atualizar estoque
-* [ ] Validar regras básicas
-
-✔ Backend pronto = 70% da AV1 feita.
-
----
-
-## 🟢 FASE 4 — Frontend (Jetpack Compose)
-
----
-
-### 8️⃣ Estrutura base do app
-
-* [ ] Criar projeto Compose
+* [ ] Criar estrutura base do app
 * [ ] Configurar Retrofit
-* [ ] Criar ViewModel base
+* [ ] Criar tela de cadastro
+* [ ] Criar tela de listagem de necessidades
+* [ ] Criar tela de manifestação de interesse
+* [ ] Integrar com backend
+* [ ] Testar fluxo completo
 
 ---
 
-### 9️⃣ Telas mínimas
+### 🎤 Preparação da Apresentação
 
-* [ ] Tela de Cadastro/Login
-* [ ] Tela de Listagem de Itens
-* [ ] Tela de Cadastro de Item
-* [ ] Tela de Doação
-
----
-
-## 🟢 FASE 5 — Integração Final
-
-* [ ] Testar fluxo completo:
-
-  * ONG cadastra item
-  * Doador visualiza
-  * Doador cria doação
-* [ ] Corrigir bugs
-* [ ] Ajustar README
-* [ ] Preparar explicação dos padrões
+* [ ] Explicar objetivo social do projeto
+* [ ] Demonstrar funcionamento do app
+* [ ] Explicar onde foi aplicado Factory
+* [ ] Explicar onde foi aplicado Facade
+* [ ] Justificar escolha dos padrões
 
 ---
 
-Divisão por funcionalidades completas:
+## 📌 Estrutura do Projeto
+
+```
+dongnate/
+├── dongnate-backend/
+├── dongnate-mobile/
+├── database/
+└── docs/
+```
 
 ---
 
-### 👤 Matheus
+## 🚀 Futuras Melhorias (AV2)
 
-Responsável por:
-
-* Cadastro de Usuário (back + front + banco)
-
----
-
-### 👤 Alvaro
-
-Responsável por:
-
-* Cadastro/Listagem de Itens (back + front + banco)
+* Sistema automático de recomendação de Match
+* Notificações
+* Testes unitários no backend
+* Melhorias de UI/UX
+* Deploy online da aplicação
 
 ---
 
-### 👤 Thiago
-
-Responsável por:
-
-* Sistema de Doação + Facade
 
 ---
